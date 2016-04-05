@@ -16,7 +16,7 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @completion.all_words,["pizza"]
   end
 
-  def test_it_takes_a_file_of_words_and_makes_an_array_of_length_of_lines_in_file
+  def test_it_takes_a_file_of_words_and_makes_an_array_with_length_lines_in_file
     assert_equal @completion.convert_file_to_array(@dictionary).length,235886
   end
 

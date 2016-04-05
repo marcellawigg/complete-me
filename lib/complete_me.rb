@@ -1,5 +1,5 @@
 class CompleteMe
-  attr_accessor :all_words, :count
+  attr_reader :all_words, :count
   def initialize
     @all_words = []
     @count = 0
@@ -13,7 +13,7 @@ class CompleteMe
   def convert_file_to_array(file)
     word_array = []
     file.each_line do |line|
-      word_array.push line
+      word_array << line
     end
     word_array
   end
@@ -23,6 +23,6 @@ class CompleteMe
       insert(word)
     end
   end
-  
+
 end
 #def suggest(word)
