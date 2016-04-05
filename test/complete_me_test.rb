@@ -12,6 +12,7 @@ class CompleteMeTest < MiniTest::Test
   def test_it_adds_a_single_word
     @completion.insert("pizza")
     assert_equal @completion.count,1
+    assert_equal @completion.all_words,["pizza"]
   end
 
 end
