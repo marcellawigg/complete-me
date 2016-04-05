@@ -3,6 +3,8 @@ class CompleteMe
   def initialize
     @all_words = []
     @count = 0
+    @root = nil
+    @children = nil
   end
 
   def insert(word)
@@ -22,7 +24,11 @@ class CompleteMe
     convert_file_to_array(file).each do |word|
       insert(word)
     end
+
+    def 
   end
+
+
 
 end
 #def suggest(word)
