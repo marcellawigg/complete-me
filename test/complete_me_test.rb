@@ -47,8 +47,11 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @completion.count,235886
   end
 
-  def test_it_returns_different_results_when_dictionary_populated
-    @completion.populate(@dictionary)
-  end
+  # def test_it_returns_different_results_when_dictionary_populated
+  #   @completion.populate(@dictionary)
+  # end
+
+  # def test_it_weights_words_when_selected
+  #   @completion.suggest("piz")
 
 end

@@ -85,12 +85,17 @@ class CompleteMe
     word_array
   end
 
-  def populate(file)
-    convert_file_to_array(file).each do |word|
+  # def read(file)
+  #   word_list = file.split("\n")
+  # end
+
+  def populate(word_list)
+    word_list = word_list.split("\n")
+    word_list.each do |word|
       insert(word)
     end
   end
 
-  def delete(word)
-  end
+  # def delete(word)
+  # end
 end
