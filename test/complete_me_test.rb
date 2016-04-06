@@ -1,7 +1,5 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require 'test_helper'
 require './lib/complete_me'
-require './lib/node'
 
 class CompleteMeTest < MiniTest::Test
   attr_reader :completion, :dictionary
