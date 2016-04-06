@@ -20,11 +20,11 @@ class CompleteMe
     else
       letter = word.shift
       value += letter
-      if node.link[letter].nil?
-        node.link[letter] = Node.new
-        create_path(word,node.link[letter],value)
+      if node.child[letter].nil?
+        node.child[letter] = Node.new
+        create_path(word,node.child[letter],value)
       else
-        create_path(word,node.link[letter],value)
+        create_path(word,node.child[letter],value)
       end
     end
   end
@@ -47,8 +47,8 @@ class CompleteMe
 
   def traverse_trie(substring,node)
     letter = substring.shift
-    if node.link.has_key?(letter)
-      traverse_trie(substring,node.link[letter])
+    if node.child.has_key?(letter)
+      traverse_trie(substring,node.child[letter])
     else
       suggestion_list = []
       if node.end_word
@@ -59,7 +59,7 @@ class CompleteMe
   end
 
   def traverse_other_paths(node,list)
-    node.link.each_value do |node|
+    node.child.each_value do |node|
       if node.end_word
         list.push(node)
       end
@@ -72,22 +72,11 @@ class CompleteMe
     sorted = list.sort_by do |i|
       i.weight[substring]
     end
+    sorted = sorted.reverse
     sorted.map do |i|
       i.value
     end
   end
-
-  def convert_file_to_array(file)
-    word_array = []
-    file.each_line do |line|
-      word_array.push(line)
-    end
-    word_array
-  end
-
-  # def read(file)
-  #   word_list = file.split("\n")
-  # end
 
   def populate(word_list)
     word_list = word_list.split("\n")
@@ -95,7 +84,4 @@ class CompleteMe
       insert(word)
     end
   end
-
-  # def delete(word)
-  # end
 end
