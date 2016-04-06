@@ -29,26 +29,26 @@ class CompleteMe
     end
   end
 
-  def suggest(value,node=root)
-    known_so_far = value.chars
+  def suggest(substring,node=root)
+    known_so_far = substring.chars
     suggestion_list = traverse_trie(known_so_far,node)
-    sort_weights(value,suggestion_list)
+    sort_weights(substring,suggestion_list)
   end
 
-  def select(value,word_with_weight)
-    value_letters = value.chars
-    traverse_tree(value_letters,node=root).each do |node|
+  def select(substring,word_with_weight)
+    substring_letters = substring.chars
+    traverse_trie(substring_letters,node=root).each do |node|
       if node.value == word_with_weight
-        node.weight[value] += 1
+        node.weight[substring] += 1
       end
     end
-    suggest(value,node)
+    suggest(substring,node)
   end
 
-  def traverse_trie(value,node)
-    letter = value.shift
+  def traverse_trie(substring,node)
+    letter = substring.shift
     if node.link.has_key?(letter)
-      traverse_trie(value,node.link[letter])
+      traverse_trie(substring,node.link[letter])
     else
       suggestion_list = []
       if node.end_word
@@ -58,37 +58,39 @@ class CompleteMe
     end
   end
 
-  def traverse_other_paths(node,suggestion_list)
-    node.link.each_value do |n|
+  def traverse_other_paths(node,list)
+    node.link.each_value do |node|
       if node.end_word
-        suggestion_list.push(node)
+        list.push(node)
       end
-      traverse_other_paths(node,suggestion_list)
+      traverse_other_paths(node,list)
     end
-    suggestion_list
+    list
   end
 
-  def sort_weights(value, list)
+  def sort_weights(substring, list)
     sorted = list.sort_by do |i|
-      i.weight[value] * -1
+      i.weight[substring]
     end
-    sorted.map do |i| i.value
+    sorted.map do |i|
+      i.value
     end
   end
-
 
   def convert_file_to_array(file)
     word_array = []
     file.each_line do |line|
-      word_array << line
+      word_array.push(line)
     end
     word_array
   end
-
 
   def populate(file)
     convert_file_to_array(file).each do |word|
       insert(word)
     end
+  end
+
+  def delete(word)
   end
 end
