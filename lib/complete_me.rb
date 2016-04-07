@@ -79,8 +79,7 @@ class CompleteMe
     sorted = list.sort_by do |i|
      -i.weight[substring]
     end
-    sorted.map do |i|
-      i.value
+    sorted.map{:&value}
     end
   end
 
