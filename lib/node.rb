@@ -19,7 +19,7 @@ class Node
     if child.length >= 2
       true
     elsif child.length == 1
-      self.child.has_branches_below?
+      self.self.has_branches_below?
     else
       false
     end
