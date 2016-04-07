@@ -85,8 +85,8 @@ class CompleteMe
   end
 
   def delete(word)
-    !node.is_word
+    !is_word
   end
-  
+
 
 end

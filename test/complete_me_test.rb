@@ -1,5 +1,5 @@
-require './test/test_helper'
-require './lib/complete_me'
+require_relative 'test_helper'
+require_relative '../lib/complete_me'
 
 class CompleteMeTest < MiniTest::Test
   attr_reader :completion, :dictionary
@@ -30,13 +30,13 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @completion.root.child["p"].child["i"].child["z"].child["z"].child["a"].value,"pizza"
   end
 
-  def test_it_increases_the_count_when_single_item_inserted
+  def test_it_increases_the_count_by_1_when_single_item_inserted
     @completion.insert("pizza")
     assert_equal @completion.count,1
   end
 
-  def it_creates_path_when_word_inserted
-  assert_equal @completion.insert("yellow"),@completion.create_path("yellow",root,"")
+  def test_it_creates_path_when_word_inserted
+  assert_equal @completion.insert("yellow"),@completion.create_path("yellow".chars,@root,"")
   end
 
   def test_it_increases_count_when_multiple_words_added
@@ -74,4 +74,10 @@ class CompleteMeTest < MiniTest::Test
     @completion.insert("idiopathic")
     assert_equal @completion.suggest("i"), ["id", "idiot", "idiopathic", "ideological"]
   end
+  def test_it_stops_suggesting_deleted_word
+    @completion.insert("pizza")
+    @completion.delete("pizza")
+    refute_equal @completion.suggest("piz"),["pizza"]
+  end
+
 end
