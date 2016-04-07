@@ -69,17 +69,17 @@ class CompleteMe
     node.child.each_value do |node|
       if node.is_word
         list.push(node)
-        list
-      else
-      traverse_other_paths(node,list)
-    end
-
-    def sort_weights(substring, list)
-      sorted = list.sort_by do |i|
-        -i.weight[substring]
       end
-      sorted.map{:&value}
+        traverse_other_paths(node,list)
+      end
+      list
     end
   end
 
+  def sort_weights(substring, list)
+    sorted = list.sort_by do |i|
+      -i.weight[substring]
+    end
+    sorted.map(&:value)
+  end
 end
