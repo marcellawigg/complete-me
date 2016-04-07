@@ -21,5 +21,5 @@ class NodeTest < MiniTest::Test
   end
 
   def test_it_returns_true_if_there_are_multiple_branches
-    @node.child = {}
+    @
 end

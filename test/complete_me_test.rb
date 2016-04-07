@@ -31,7 +31,7 @@ class CompleteMeTest < MiniTest::Test
 
   def test_it_suggests_a_word_even_when_single_word_added
     @completion.insert("pizza")
-    @completion.suggest("piz")
+    assert_equal @completion.suggest("piz"),["pizza"]
   end
 
   def test_it_suggests_multiple_words_given_a_single_word
@@ -40,15 +40,14 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @completion.suggest("piz"),["pizza","pizzazz"]
   end
 
-    def test_it_populates_dictionary_into_the_trie
-      @completion.populate(@dictionary)
-      assert_equal @completion.count,235886
-    end
+  def test_it_populates_dictionary_into_the_trie
+    @completion.populate(@dictionary)
+    assert_equal @completion.count,235886
   end
 
-  # def test_it_returns_different_results_when_dictionary_populated
-  #   @completion.populate(@dictionary)
-  # end
-
-  # def test_it_weights_words_when_selected
-  #   @completion.suggest("piz")
+  def test_it_deletes_one_word_after_insertion
+    @completion.insert("pizza")
+    @completion.delete("pizza")
+    assert_equal @completion.count,0
+  end
+end

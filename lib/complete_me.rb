@@ -7,17 +7,10 @@ class CompleteMe
     @root = Node.new
   end
 
-  def insert(word,node=@root,value='')
+  def insert(word,node=root,value="")
     word = word.downcase.chars
     @count += 1
     create_path(word,node,value)
-  end
-
-  def populate(word_list)
-    word_list = word_list.split("\n")
-    word_list.each do |word|
-      insert(word)
-    end
   end
 
   def create_path(word,node,value)
@@ -36,14 +29,15 @@ class CompleteMe
     end
   end
 
-  def suggest(substring,node=@root)
-    suggestions = traverse_trie(substring.chars,node)
-    sort_weights(substring,suggestions)
+  def suggest(substring,node=root)
+    known_so_far = substring.chars
+    suggestion_list = traverse_trie(known_so_far,node)
+    sort_weights(substring,suggestion_list)
   end
 
   def select(substring,word_with_weight)
     substring_letters = substring.chars
-    traverse_trie(substring_letters,node=@root).each do |node|
+    traverse_trie(substring_letters,node=root).each do |node|
       if node.value == word_with_weight
         node.weight[substring] += 1
       end
@@ -53,27 +47,60 @@ class CompleteMe
 
   def traverse_trie(substring,node)
     letter = substring.shift
-    generate_suggestions(node, substring,suggestion_list=[])
-    sort_weights(substring,suggestion_list)
-  end
-end
-
-def generate_suggestions(node, substring,suggestion_list=[])
-  suggestion_list = []
-  if node.has_child_nodes?
-    suggestion_list.push(node)
-  else
-    node.child.each do |stored_letter,suggestion_list|
-      generate_suggestions((substring.insert(-1,stored_letter)),suggestion_list)
+    if node.child.has_key?(letter)
+      traverse_trie(substring,node.child[letter])
+    else
+      suggestion_list = []
+      if node.end_word
+        suggestion_list.push(node)
+      end
+      traverse_other_paths(node,suggestion_list)
     end
-    suggestion_list
+  end
+
+  def traverse_other_paths(node,list)
+    node.child.each_value do |node|
+      if node.end_word
+        list.push(node)
+      end
+      traverse_other_paths(node,list)
+    end
+    list
   end
 
   def sort_weights(substring, list)
-    sorted = list.sort_by do |i| i.weight[substring] * -1
+    sorted = list.sort_by do |i|
+      i.weight[substring] * -1
     end
     sorted.map do |i|
       i.value
+    end
+  end
+
+  def populate(word_list)
+    word_list = word_list.split("\n")
+    word_list.each do |word|
+      insert(word)
+    end
+  end
+
+  # def has_branches_below?(node)
+  #   return nil if node.child.nil?
+  #   if node.child.length >= 2
+  #     true
+  #   elsif node.child.length == 1
+  #     has_branches_below?(node.child)
+  #   else
+  #     false
+  #   end
+  # end
+
+  def delete(word,node=@root)
+    if node.has_branches_below?
+      node.child.delete(word,node.child)
+    else
+      node.child.kill(node.child)
+      @count -= 1
     end
   end
 end

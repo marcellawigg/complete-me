@@ -11,11 +11,15 @@ class Node
     child.empty? == false
   end
 
-  def has_branch?
+  def exists_child?(letter)
+    child.has_key?(letter)
+  end
+
+  def has_branches_below?
     if child.length >= 2
       true
     elsif child.length == 1
-      child.has_branch?
+      self.child.has_branches_below?
     else
       false
     end
