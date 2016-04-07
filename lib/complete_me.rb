@@ -1,4 +1,4 @@
-require "./lib/node"
+require_relative "../lib/node"
 
 class CompleteMe
   attr_reader :count, :root
@@ -11,6 +11,13 @@ class CompleteMe
     word = word.downcase.chars
     @count += 1
     create_path(word,node,value)
+  end
+
+  def populate(word_list)
+    word_list = word_list.split("\n")
+    word_list.each do |word|
+      insert(word)
+    end
   end
 
   def create_path(word,node,value)
@@ -29,7 +36,7 @@ class CompleteMe
     end
   end
 
-  def suggest(substring,node=root)
+  def suggest(substring,node=@root)
     known_so_far = substring.chars
     suggestion_list = traverse_trie(known_so_far,node)
     sort_weights(substring,suggestion_list)
@@ -70,23 +77,11 @@ class CompleteMe
 
   def sort_weights(substring, list)
     sorted = list.sort_by do |i|
-      i.weight[substring] * -1
+     -i.weight[substring]
     end
     sorted.map do |i|
       i.value
     end
   end
-
-  def populate(word_list)
-    word_list = word_list.split("\n")
-    word_list.each do |word|
-      insert(word)
-    end
-  end
-
-  def delete(word)
-    !is_word
-  end
-
 
 end

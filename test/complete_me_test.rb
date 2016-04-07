@@ -34,11 +34,7 @@ class CompleteMeTest < MiniTest::Test
     @completion.insert("pizza")
     assert_equal @completion.count,1
   end
-
-  def test_it_creates_path_when_word_inserted
-  assert_equal @completion.insert("yellow"),@completion.create_path("yellow".chars,@root,"")
-  end
-
+  #
   def test_it_increases_count_when_multiple_words_added
     @completion.insert("pizza")
     @completion.insert("pizzazz")
@@ -67,6 +63,25 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @completion.count,235886
   end
 
+  def test_it_tracks_the_number_of_times_item_selected_when_one_item_select
+    @completion.insert("pizza")
+    @completion.insert("pizzazz")
+    @completion.suggest("piz")
+    @completion.select("piz","pizzazz")
+    assert_equal @completion.suggest("piz"),["pizzazz","pizza"]
+  end
+
+  def test_it_tracks_the_number_of_times_item_selected_when_multiple_items_select
+    @completion.insert("pizza")
+    @completion.insert("pizzazz")
+    @completion.insert("pizzicato")
+    @completion.suggest("piz")
+    @completion.select("piz","pizzazz")
+    @completion.select("piz","pizza")
+    @completion.select("piz","pizzazz")
+    assert_equal @completion.suggest("piz"),["pizzazz","pizza","pizzicato"]
+  end
+
   def test_it_provides_word_when_that_word_is_suggested
     @completion.insert("id")
     @completion.insert("idiot")
@@ -74,10 +89,13 @@ class CompleteMeTest < MiniTest::Test
     @completion.insert("idiopathic")
     assert_equal @completion.suggest("i"), ["id", "idiot", "idiopathic", "ideological"]
   end
-  def test_it_stops_suggesting_deleted_word
+
+  def test_it_tracks_letters_specifically
     @completion.insert("pizza")
-    @completion.delete("pizza")
-    refute_equal @completion.suggest("piz"),["pizza"]
+    @completion.insert("pizzazz")
+    @completion.select("piz","pizzazz")
+    assert_equal @completion.suggest("piz"),["pizzazz","pizza"]
+    assert_equal@completion.suggest("pi"),["pizza","pizzazz"]
   end
 
 end
