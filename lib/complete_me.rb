@@ -16,7 +16,7 @@ class CompleteMe
   def create_path(word,node,value)
     if word.empty?
       node.value = value
-      node.end_word = true
+      node.is_word = true
     else
       letter = word.shift
       value += letter
@@ -51,7 +51,7 @@ class CompleteMe
       traverse_trie(substring,node.child[letter])
     else
       suggestion_list = []
-      if node.end_word
+      if node.is_word
         suggestion_list.push(node)
       end
       traverse_other_paths(node,suggestion_list)
@@ -60,7 +60,7 @@ class CompleteMe
 
   def traverse_other_paths(node,list)
     node.child.each_value do |node|
-      if node.end_word
+      if node.is_word
         list.push(node)
       end
       traverse_other_paths(node,list)
@@ -84,23 +84,9 @@ class CompleteMe
     end
   end
 
-  # def has_branches_below?(node)
-  #   return nil if node.child.nil?
-  #   if node.child.length >= 2
-  #     true
-  #   elsif node.child.length == 1
-  #     has_branches_below?(node.child)
-  #   else
-  #     false
-  #   end
-  # end
-
-  def delete(word,node=@root)
-    if node.has_branches_below?
-      node.child.delete(word,node.child)
-    else
-      node.child.kill(node.child)
-      @count -= 1
-    end
+  def delete(word)
+    !node.is_word
   end
+  
+
 end

@@ -9,6 +9,18 @@ class CompleteMeTest < MiniTest::Test
     @dictionary = File.read("/usr/share/dict/words")
   end
 
+  def test_it_begins_count_at_zero
+    assert_equal @completion.count,0
+  end
+
+  def test_it_initializes_root_as_a_complete_me_class_object
+    assert_equal @completion.class,CompleteMe
+  end
+
+  def test_it_makes_is_word_true_if_word_empty
+    assert_equal @completion.insert(''),true
+  end
+
   def test_it_creates_new_node_when_root_called
     assert_equal Node,@completion.root.class
   end
@@ -21,6 +33,10 @@ class CompleteMeTest < MiniTest::Test
   def test_it_increases_the_count_when_single_item_inserted
     @completion.insert("pizza")
     assert_equal @completion.count,1
+  end
+
+  def it_creates_path_when_word_inserted
+  assert_equal @completion.insert("yellow"),@completion.create_path("yellow",root,"")
   end
 
   def test_it_increases_count_when_multiple_words_added
@@ -40,14 +56,22 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @completion.suggest("piz"),["pizza","pizzazz"]
   end
 
+  def test_it_corrects_erroneous_capital_letters_in_insert
+    @completion.insert("pIzza")
+    assert_equal 1,@completion.count
+    assert_equal "pizza",completion.root.child["p"].child["i"].child["z"].child["z"].child["a"].value
+  end
+
   def test_it_populates_dictionary_into_the_trie
     @completion.populate(@dictionary)
     assert_equal @completion.count,235886
   end
 
-  def test_it_deletes_one_word_after_insertion
-    @completion.insert("pizza")
-    @completion.delete("pizza")
-    assert_equal @completion.count,0
+  def test_it_provides_word_when_that_word_is_suggested
+    @completion.insert("id")
+    @completion.insert("idiot")
+    @completion.insert("ideological")
+    @completion.insert("idiopathic")
+    assert_equal @completion.suggest("i"), ["id", "idiot", "idiopathic", "ideological"]
   end
 end

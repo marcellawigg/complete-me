@@ -20,6 +20,4 @@ class NodeTest < MiniTest::Test
     assert_equal @node.weight,{}
   end
 
-  def test_it_returns_true_if_there_are_multiple_branches
-    @
 end
