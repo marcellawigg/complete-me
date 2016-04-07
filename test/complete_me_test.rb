@@ -57,6 +57,7 @@ class CompleteMeTest < MiniTest::Test
     assert_equal 1,@completion.count
     path = root.child["p"].child["i"].child["z"].child["z"].child["a"].value
     assert_equal "pizza",completion.path
+  end
 
   def test_it_populates_dictionary_into_the_trie
     @completion.populate(@dictionary)
