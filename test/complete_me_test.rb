@@ -1,4 +1,4 @@
-require 'test_helper'
+require './test/test_helper'
 require './lib/complete_me'
 
 class CompleteMeTest < MiniTest::Test
@@ -15,8 +15,12 @@ class CompleteMeTest < MiniTest::Test
 
   def test_it_inserts_a_single_word_along_path
     @completion.insert("pizza")
+    assert_equal @completion.root.child["p"].child["i"].child["z"].child["z"].child["a"].value,"pizza"
+  end
+
+  def test_it_increases_the_count_when_single_item_inserted
+    @completion.insert("pizza")
     assert_equal @completion.count,1
-    assert_equal @completion.root.link["p"].link["i"].link["z"].link["z"].link["a"].value,"pizza"
   end
 
   def test_it_increases_count_when_multiple_words_added
@@ -27,7 +31,7 @@ class CompleteMeTest < MiniTest::Test
 
   def test_it_suggests_a_word_even_when_single_word_added
     @completion.insert("pizza")
-    assert_equal @completion.suggest("piz"),["pizza"]
+    @completion.suggest("piz")
   end
 
   def test_it_suggests_multiple_words_given_a_single_word
@@ -36,13 +40,10 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @completion.suggest("piz"),["pizza","pizzazz"]
   end
 
-  def test_it_takes_a_file_of_words_and_makes_an_array_with_length_lines_in_file
-    assert_equal @completion.convert_file_to_array(@dictionary).length,235886
-  end
-
-  def test_it_populates_dictionary_into_the_trie
-    @completion.populate(@dictionary)
-    assert_equal @completion.count,235886
+    def test_it_populates_dictionary_into_the_trie
+      @completion.populate(@dictionary)
+      assert_equal @completion.count,235886
+    end
   end
 
   # def test_it_returns_different_results_when_dictionary_populated
@@ -51,5 +52,3 @@ class CompleteMeTest < MiniTest::Test
 
   # def test_it_weights_words_when_selected
   #   @completion.suggest("piz")
-
-end

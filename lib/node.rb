@@ -6,4 +6,19 @@ class Node
     @weight = weight
     @value = value
   end
+
+  def has_child_nodes?
+    child.empty? == false
+  end
+
+  def has_branch?
+    if child.length >= 2
+      true
+    elsif child.length == 1
+      child.has_branch?
+    else
+      false
+    end
+  end
+
 end
