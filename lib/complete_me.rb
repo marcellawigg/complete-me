@@ -70,10 +70,9 @@ class CompleteMe
       if node.is_word
         list.push(node)
       end
-        traverse_other_paths(node,list)
-      end
-      list
+      traverse_other_paths(node,list)
     end
+    list
   end
 
   def sort_weights(substring, list)
