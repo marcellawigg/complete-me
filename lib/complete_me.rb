@@ -67,9 +67,7 @@ class CompleteMe
 
   def traverse_other_paths(node,list)
     node.child.each_value do |node|
-      if node.is_word
-        list.push(node)
-      end
+      list.push(node) if node.is_word
       traverse_other_paths(node,list)
     end
     list
