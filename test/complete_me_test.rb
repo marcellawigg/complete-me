@@ -27,7 +27,8 @@ class CompleteMeTest < MiniTest::Test
 
   def test_it_inserts_a_single_word_along_path
     @completion.insert("pizza")
-    assert_equal @completion.root.child["p"].child["i"].child["z"].child["z"].child["a"].value,"pizza"
+    path = root.child["p"].child["i"].child["z"].child["z"].child["a"].value
+    assert_equal @completion.path,"pizza"
   end
 
   def test_it_increases_the_count_by_1_when_single_item_inserted
