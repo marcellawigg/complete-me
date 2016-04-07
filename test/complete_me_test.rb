@@ -34,7 +34,7 @@ class CompleteMeTest < MiniTest::Test
     @completion.insert("pizza")
     assert_equal @completion.count,1
   end
-  #
+  # work on refactoring testing. Dried out, in one place, and used, everywhere. Create trie with
   def test_it_increases_count_when_multiple_words_added
     @completion.insert("pizza")
     @completion.insert("pizzazz")
@@ -55,12 +55,12 @@ class CompleteMeTest < MiniTest::Test
   def test_it_corrects_erroneous_capital_letters_in_insert
     @completion.insert("pIzza")
     assert_equal 1,@completion.count
-    assert_equal "pizza",completion.root.child["p"].child["i"].child["z"].child["z"].child["a"].value
-  end
+    path = root.child["p"].child["i"].child["z"].child["z"].child["a"].value
+    assert_equal "pizza",completion.path
 
   def test_it_populates_dictionary_into_the_trie
     @completion.populate(@dictionary)
-    assert_equal @completion.count,235886
+    assert_equal @completion.count,@dictionary.count
   end
 
   def test_it_tracks_the_number_of_times_item_selected_when_one_item_select
