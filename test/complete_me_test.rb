@@ -28,7 +28,7 @@ class CompleteMeTest < MiniTest::Test
   def test_it_inserts_a_single_word_along_path
     @completion.insert("pizza")
     path = @completion.root.child["p"].child["i"].child["z"].child["z"].child["a"].value
-    assert_equal @completion.path,"pizza"
+    assert_equal path,"pizza"
   end
 
   def test_it_increases_the_count_by_1_when_single_item_inserted
@@ -56,13 +56,13 @@ class CompleteMeTest < MiniTest::Test
   def test_it_corrects_erroneous_capital_letters_in_insert
     @completion.insert("pIzza")
     assert_equal 1,@completion.count
-    path = root.child["p"].child["i"].child["z"].child["z"].child["a"].value
-    assert_equal "pizza",completion.path
+    path = @completion.root.child["p"].child["i"].child["z"].child["z"].child["a"].value
+    assert_equal "pizza",path
   end
 
   def test_it_populates_dictionary_into_the_trie
     @completion.populate(@dictionary)
-    assert_equal @completion.count,@dictionary.count
+    assert_equal @completion.count,@completion.populate(@dictionary).count
   end
 
   def test_it_tracks_the_number_of_times_item_selected_when_one_item_select
