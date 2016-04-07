@@ -20,22 +20,6 @@ class CompleteMe
     end
   end
 
-  def create_path(word,node,value)
-    if word.empty?
-      node.value = value
-      node.is_word = true
-    else
-      letter = word.shift
-      value += letter
-      if node.child[letter].nil?
-        node.child[letter] = Node.new
-        create_path(word,node.child[letter],value)
-      else
-        create_path(word,node.child[letter],value)
-      end
-    end
-  end
-
   def suggest(substring,node=@root)
     known_so_far = substring.chars
     suggestion_list = traverse_trie(known_so_far,node)
@@ -50,6 +34,22 @@ class CompleteMe
       end
     end
     suggest(substring,node)
+  end
+
+  def create_path(word,node,value)
+    if word.empty?
+      node.value = value
+      node.is_word = true
+    else
+      letter = word.shift
+      value += letter
+      if node.child[letter].nil?
+        node.child[letter] = Node.new
+        create_path(word,node.child[letter],value)
+      else
+        create_path(word,node.child[letter],value)
+      end
+    end
   end
 
   def traverse_trie(substring,node)
@@ -76,10 +76,10 @@ class CompleteMe
   end
 
   def sort_weights(substring, list)
-    sorted = list.sort_by do |i|
-     -i.weight[substring]
+    sorted_list = list.sort_by do |i|
+      -i.weight[substring]
     end
-    sorted.map do |i|
+    sorted_list.map do |i|
       i.value
     end
   end
